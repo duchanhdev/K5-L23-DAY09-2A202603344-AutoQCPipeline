@@ -25,6 +25,12 @@ TODO(học viên): **một chỗ calibration có thể đánh lừa bạn**, kè
 ## 4. Cửa chặn và điều pipeline KHÔNG bắt được
 TODO(học viên): (a) chứng minh gate chặn đúng: chạy `python -m pipeline.run --budget 0 --reports work/rep_nb --export-dir work/exp_nb` (không có người duyệt nên ảnh thiếu file nhãn còn nguyên), chỉ ra kết luận **Rework**, mã thoát 20 và việc **không xuất** dataset. (Đừng sửa tay `work/run/ds`: pipeline dựng lại thư mục này từ raw mỗi lần chạy.) (b) ≥ 2 điểm mù có bằng chứng (box lỏng nhẹ, nhầm lớp mà model lớn cũng nhầm, ảnh trùng biến đổi mạnh…).
 
+Quan sát Bước 1 trên `work/viz/` (class ID là số đầu mỗi box YOLO: 0 car, 1 person, 2 truck, 3 bus):
+
+1. `img_0020`: xe buýt Metro Local bị gán nhầm thành truck (ID 2). Đúng phải là bus (ID 3). Một người đứng cạnh xe bị gán ID 93; đúng phải là person (ID 1). ID 93 không có trong 0–3.
+2. `img_0050`: người lướt sóng gán đúng person (ID 1). Chiều rộng box bằng 0, nên không còn hình chữ nhật, chỉ còn một vạch đứng cắt qua người.
+3. `img_0018`: đứa trẻ trên ghế gán đúng person (ID 1), nhưng box không ôm sát người mà phủ gần hết ảnh. `img_0087` (bé gái ăn pizza) và `img_0196` (bé gái đánh răng) cũng vậy: ID 1 đúng, box quá to.
+
 ## 5. Train: raw vs clean (tùy chọn, chấm riêng)
 Chưa train: ghi "chưa chạy" và lý do, rồi bỏ qua phần còn lại của mục này. Nếu đã train: dán bảng từ `submission/results/comparison.md` (model, epoch, seed, số ảnh train mỗi biến thể).
 
