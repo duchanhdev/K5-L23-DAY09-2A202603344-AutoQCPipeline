@@ -57,7 +57,16 @@ Muốn thành Release với ngưỡng 0,10 đã ghim: 20/202 = 0,0990 còn Hold 
 
 ## 5. Train: raw vs clean
 
-Chưa chạy. Phần train là mục tùy chọn, làm trên Google Colab.
+Colab, GPU (`device=0`), `yolo26n`, 20 epoch, `batch` 16, `imgsz` 640, seed 0 và 1. Cùng `gold_val` 40 ảnh và test 100 ảnh. Raw train 224 ảnh, clean train 202 ảnh.
+
+| biến thể | #ảnh train | số seed | mAP50 (TB ± độ lệch) | mAP50-95 (TB ± độ lệch) | precision (TB ± độ lệch) | recall (TB ± độ lệch) |
+|---|---|---|---|---|---|---|
+| raw | 224 | 2 | 0,726 ± 0,000 | 0,512 ± 0,004 | 0,764 ± 0,061 | 0,649 ± 0,028 |
+| clean | 202 | 2 | 0,701 ± 0,025 | 0,487 ± 0,008 | 0,759 ± 0,003 | 0,625 ± 0,019 |
+
+Chênh mAP50 (clean − raw) = **−0,025**. Hai seed của clean là 0,718 và 0,683, lệch nhau 0,035, lớn hơn mức chênh giữa hai trung bình. Chưa kết luận được clean tốt hơn raw. Việc tiếp theo là thêm seed, hoặc so với nhãn người, trước khi đổi quyết định Hold.
+
+Hai giả thuyết. Raw vẫn chứa 5 ảnh trùng test (`img_0049`, `img_0101`, `img_0167`, `img_0174`, `img_0221` trong `01_intake.txt`); clean đã loại chúng, nên metric test của raw có thể đẹp hơn vì học trúng ảnh đo. Clean vẫn còn cảnh báo ngữ nghĩa: v3 còn 12 ảnh `POSSIBLE_MISSING` và 3 ảnh `POSSIBLE_WRONG_CLASS`, và ít hơn raw 22 ảnh. Cách kiểm là train lại sau khi duyệt hết 38 ảnh còn cảnh báo, cùng seed, cùng test 100 ảnh.
 
 ## 6. Quyết định và ghi chú AI
 
